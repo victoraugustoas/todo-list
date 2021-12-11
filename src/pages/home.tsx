@@ -3,6 +3,8 @@ import { Box } from "@mui/system";
 import { motion } from "framer-motion";
 import { useState } from "react";
 import { CardTask } from "../components/cardTask";
+import AddIcon from "@mui/icons-material/Add";
+import { Layout } from "../components/Layout";
 
 const Homepage: React.FC = () => {
   const [tasks, setTasks] = useState([
@@ -13,7 +15,7 @@ const Homepage: React.FC = () => {
   ]);
 
   return (
-    <Box sx={{ px: 2 }}>
+    <Layout showAddTask >
       <Typography>Tarefas de hoje</Typography>
 
       <Box
@@ -37,7 +39,7 @@ const Homepage: React.FC = () => {
           />
         ))}
       </Box>
-    </Box>
+    </Layout>
   );
 };
 

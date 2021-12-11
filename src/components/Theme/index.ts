@@ -5,6 +5,7 @@ import { darken } from "@mui/system";
 export const getApplicationTheme = (mode: PaletteMode) => {
   const palette = createPalette({
     primary: { main: "#ADBAEB" },
+    secondary: { main: "#0767F8" },
     mode,
     ...(mode === "dark"
       ? { background: { paper: darken("#FFF", 0.87) } }
@@ -18,7 +19,14 @@ export const getApplicationTheme = (mode: PaletteMode) => {
       MuiButton: {
         styleOverrides: {
           outlinedPrimary: {
-            color: palette.mode === "dark" ? palette.primary.dark : "#020417",
+            color: palette.mode === "dark" ? palette.primary.dark : "#212B55",
+          },
+        },
+      },
+      MuiIconButton: {
+        styleOverrides: {
+          colorPrimary: {
+            color: palette.mode === "dark" ? palette.primary.dark : "#212B55",
           },
         },
       },

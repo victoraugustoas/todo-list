@@ -1,6 +1,7 @@
 import { CssBaseline, ThemeProvider, useMediaQuery } from "@mui/material";
 import React from "react";
 import { getApplicationTheme } from "./components/Theme";
+import { LayoutContextProvider } from "./contexts/LayoutContext";
 import { Homepage } from "./pages/home";
 
 export const App: React.FC = () => {
@@ -10,9 +11,11 @@ export const App: React.FC = () => {
 
   return (
     <ThemeProvider theme={theme}>
-      <CssBaseline />
+      <LayoutContextProvider>
+        <CssBaseline />
 
-      <Homepage />
+        <Homepage />
+      </LayoutContextProvider>
     </ThemeProvider>
   );
 };
