@@ -1,5 +1,6 @@
+import DeleteIcon from "@mui/icons-material/Delete";
 import DoneRoundedIcon from "@mui/icons-material/DoneRounded";
-import { Button, Divider, Paper, Typography } from "@mui/material";
+import { Button, Divider, Paper, Typography, useTheme } from "@mui/material";
 import { Box, BoxProps } from "@mui/system";
 import { ForwardRefComponent, HTMLMotionProps, motion } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -10,16 +11,19 @@ export interface CardTaskProps
   > {
   onDeleteTask: () => void;
   description: string;
+  color: string;
 }
 
 const CardTask: React.FC<CardTaskProps> = ({
   onDeleteTask,
   description,
+  color,
   ...props
 }) => {
   const [checked, setChecked] = useState(false);
   const [wantRemove, setWantRemove] = useState(false);
   const [remove, setRemove] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     const timeoutToRemove = setTimeout(() => {
@@ -91,7 +95,7 @@ const CardTask: React.FC<CardTaskProps> = ({
             sx={{
               height: 24,
               width: 24,
-              border: "2px solid #076AFF",
+              border: `2px solid ${color}`,
               borderRadius: "50%",
             }}
           />
@@ -102,7 +106,7 @@ const CardTask: React.FC<CardTaskProps> = ({
                   height: 24,
                   width: 24,
                   borderRadius: "50%",
-                  backgroundColor: "#076AFF",
+                  backgroundColor: color,
                   position: "absolute",
                   top: 0,
                 }}
@@ -112,7 +116,7 @@ const CardTask: React.FC<CardTaskProps> = ({
                   height: 24,
                   width: 24,
                   borderRadius: "50%",
-                  backgroundColor: "#fff",
+                  backgroundColor: theme.palette.getContrastText(color),
                   position: "absolute",
                   top: 0,
                 }}
@@ -145,7 +149,8 @@ const CardTask: React.FC<CardTaskProps> = ({
             position: "relative",
             display: "flex",
             alignItems: "center",
-            ml: 2,
+            justifyContent: "center",
+            ml: 3,
           }}
         >
           <Typography sx={{ fontWeight: 500 }}>{description}</Typography>
@@ -153,12 +158,13 @@ const CardTask: React.FC<CardTaskProps> = ({
             <Divider
               sx={{
                 position: "absolute",
-                backgroundColor: "#000",
+                backgroundColor: (theme) =>
+                  theme.palette.mode === "dark" ? "#fff" : "#000",
                 borderWidth: 0.9,
               }}
               component={motion.div}
               initial={{ width: "0%" }}
-              animate={{ width: "100%" }}
+              animate={{ width: "calc(100% + 1rem)" }}
               transition={{ duration: 0.35, ease: "easeOut" }}
             />
           )}
@@ -186,9 +192,22 @@ const CardTask: React.FC<CardTaskProps> = ({
               }
         }
       >
-        <Typography>A tarefa foi apagada</Typography>
+        <Box
+          sx={{
+            display: "flex",
+            color: (theme) =>
+              theme.palette.mode === "light"
+                ? "#9D9AB4"
+                : theme.palette.primary.dark,
+            alignItems: "center",
+          }}
+        >
+          <DeleteIcon sx={{ mr: 2 }} />
+          <Typography sx={{ fontWeight: 500 }}>A tarefa foi apagada</Typography>
+        </Box>
         <Button
           variant="outlined"
+          color="primary"
           onClick={() => setWantRemove(false)}
           sx={{
             borderRadius: (theme) => theme.shape.borderRadius,

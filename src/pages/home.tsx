@@ -26,6 +26,7 @@ const Homepage: React.FC = () => {
             sx={{ mb: 1 }}
             description={task.description}
             key={task.id}
+            color="#DD0CF1"
             onDeleteTask={() => {
               setTasks((old) => {
                 let cloned = [...old];
