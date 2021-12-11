@@ -7,10 +7,41 @@ import {
   Paper,
   TextField,
 } from "@mui/material";
+import { TransitionProps } from "@mui/material/transitions";
 import { Box } from "@mui/system";
 import { motion } from "framer-motion";
-import { useState } from "react";
+import React, { useState } from "react";
 import { useLayoutContext } from "../../contexts/LayoutContext";
+
+const Transition = React.forwardRef<HTMLDivElement, TransitionProps>(
+  (props, ref) => {
+    return (
+      <Box sx={{ height: "100%", width: "100%" }} ref={ref}>
+        <Box
+          component={motion.div}
+          style={{ position: "fixed", bottom: 0, right: 0, zIndex: 1400 }}
+          initial={{ transform: "scale3d(0,0,0)" }}
+          animate={{
+            transform: "scale3d(100, 100,1)",
+            transitionEnd: { zIndex: 0 },
+          }}
+          transition={{ duration: 1 }}
+        >
+          <Paper sx={{ height: "2rem", width: "2rem", borderRadius: "50%" }} />
+        </Box>
+        <Box
+          sx={{ height: "100%", width: "100%" }}
+          component={motion.div}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 0.5 }}
+        >
+          {props.children}
+        </Box>
+      </Box>
+    );
+  }
+);
 
 export const DialogAddTask: React.FC = () => {
   const { openDialogNewTask, setOpenDialogNewTask } = useLayoutContext();
@@ -23,35 +54,7 @@ export const DialogAddTask: React.FC = () => {
       open={openDialogNewTask}
       onClose={closeDialog}
       fullScreen
-      TransitionComponent={(props) => {
-        return (
-          <>
-            <Box
-              component={motion.div}
-              style={{ position: "fixed", bottom: 0, right: 0, zIndex: 1400 }}
-              initial={{ transform: "scale3d(0,0,0)" }}
-              animate={{
-                transform: "scale3d(100, 100,1)",
-                transitionEnd: { zIndex: 0 },
-              }}
-              transition={{ duration: 1 }}
-            >
-              <Paper
-                sx={{ height: "2rem", width: "2rem", borderRadius: "50%" }}
-              />
-            </Box>
-            <Box
-              sx={{ height: "100%", width: "100%" }}
-              component={motion.div}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 1, delay: 0.5 }}
-            >
-              {props.children}
-            </Box>
-          </>
-        );
-      }}
+      TransitionComponent={Transition}
     >
       <DialogTitle sx={{ display: "flex", justifyContent: "flex-end" }}>
         <IconButton

@@ -8,7 +8,7 @@ export interface LayoutContextProps {
 const LayoutContext = createContext({} as LayoutContextProps);
 
 export const LayoutContextProvider: React.FC = ({ children }) => {
-  const [openDialogNewTask, setOpenDialogNewTask] = useState(true);
+  const [openDialogNewTask, setOpenDialogNewTask] = useState(false);
 
   return (
     <LayoutContext.Provider value={{ openDialogNewTask, setOpenDialogNewTask }}>
