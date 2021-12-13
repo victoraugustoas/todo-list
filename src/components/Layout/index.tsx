@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { useLayoutContext } from "../../contexts/LayoutContext";
 import { DialogAddTask } from "../DialogAddTask";
 import { Header } from "../Header";
+import { Sidebar } from "../Sidebar";
 
 export interface LayoutProps extends BoxProps {
   showAddTask?: boolean;
@@ -17,7 +18,8 @@ export const Layout: React.FC<LayoutProps> = ({
   childrenBoxProps,
   ...props
 }) => {
-  const { setOpenDialogNewTask, openMenu } = useLayoutContext();
+  const { setOpenDialogNewTask, openMenu, heightWithoutLinkBar } =
+    useLayoutContext();
   const theme = useTheme();
   const layoutVariant = {
     hidden: { scale: 1, x: 0 },
@@ -27,14 +29,35 @@ export const Layout: React.FC<LayoutProps> = ({
     hidden: { borderRadius: 0 },
     visible: { borderRadius: (theme.shape.borderRadius as number) * 8 },
   };
+  const sidebarVariant = {
+    hidden: { x: "-20vw" },
+    visible: { x: 0 },
+  };
 
   return (
-    <Box sx={{ backgroundColor: "#020417" }}>
-      {/* @ts-ignore */}
+    <Box
+      {...props}
+      sx={{
+        ...props.sx,
+        backgroundColor: "#020417",
+        display: "flex",
+        position: "relative",
+      }}
+    >
       <Box
-        {...props}
         component={motion.div}
-        sx={{ overflow: "hidden" }}
+        variants={sidebarVariant}
+        animate={openMenu ? "visible" : "hidden"}
+        initial="hidden"
+        sx={{ position: "absolute", zIndex: 0, width: "70vw" }}
+        transition={{ duration: 1 }}
+      >
+        <Sidebar />
+      </Box>
+
+      <Box
+        component={motion.div}
+        sx={{ overflow: "hidden", width: "100vw", zIndex: 1 }}
         variants={layoutVariant}
         animate={openMenu ? "visible" : "hidden"}
         initial="hidden"
@@ -43,7 +66,7 @@ export const Layout: React.FC<LayoutProps> = ({
         <Paper
           sx={{
             backgroundColor: (theme) => theme.palette.background.default,
-            minHeight: "100vh",
+            minHeight: heightWithoutLinkBar,
           }}
           component={motion.div}
           variants={paperVariant}
